@@ -36,7 +36,6 @@ ollama pull llama3
 ```
 ## Project Structure
 text
-Copy code
 rag-pdf-agent/
 │── ingest.js          # PDF ingestion & vector creation
 │── chat.js            # Ask questions using RAG
@@ -52,13 +51,12 @@ Place your PDF file inside the pdf/ folder.
 ## Example:
 
 text
-Copy code
 pdf/thesilentpatient.pdf
 ## 2. Ingest the PDF
 This extracts text, splits it into chunks, generates embeddings, and saves them locally.
 
 bash
-Copy code
+
 node ingest.js
 After successful ingestion, a vectorstore.json file will be created.
 
@@ -66,7 +64,7 @@ After successful ingestion, a vectorstore.json file will be created.
 Run the chat agent with your question:
 
 bash
-Copy code
+
 node chat.js "What happened to Alicia after the incident?"
 The agent will:
 
