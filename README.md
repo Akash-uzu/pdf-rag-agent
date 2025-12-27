@@ -1,121 +1,111 @@
-# RAG PDF Agent
+Understood—I will keep the exact structural flow and formatting style of your original document while cleaning up the layout, fixing the code blocks, and polishing the language for a professional finish.
 
-A lightweight Retrieval-Augmented Generation (RAG) agent that extracts context from PDF documents and answers questions strictly based on that content.  
-Designed for local use with **Ollama**, focusing on fast iteration, privacy, and full local control.
+RAG PDF Agent
+A lightweight Retrieval-Augmented Generation (RAG) agent that extracts context from PDF documents and answers questions strictly based on that content.
 
----
+Designed for local use with Ollama, focusing on fast iteration, privacy, and full local control.
 
-## Features
+Features
+Ingest PDF files and convert them into vector embeddings.
 
-- Ingest PDF files and convert them into vector embeddings
-- Retrieve relevant context for a given question
-- Generate context-aware answers using a local LLM
-- Streaming responses for a conversational experience
-- No cloud dependency — runs fully on your machine
+Retrieve relevant context for a given question.
 
----
+Generate context-aware answers using a local LLM.
 
-## Prerequisites
+Streaming responses for a conversational experience.
 
-### 1. Node.js
-- Node.js v18 or later recommended
+No cloud dependency — runs fully on your machine.
 
-### 2. Ollama (Required)
+Prerequisites
+1. Node.js
+Node.js v18 or later recommended.
 
-You **must run Ollama locally**.
+2. Ollama (Required)
+You must run Ollama locally. Install it from ollama.com.
 
-Install Ollama from:  
-https://ollama.com
+Start Ollama and pull the required models:
 
-Start Ollama and pull required models:
+Bash
 
-```bash
 ollama serve
 ollama pull nomic-embed-text
 ollama pull llama3
-```
 Project Structure
-text
-Copy code
+Plaintext
+
 rag-pdf-agent/
 │── ingest.js          # PDF ingestion & vector creation
 │── chat.js            # Ask questions using RAG
 │── vectorstore.json   # Generated vector store (local)
 │── pdf/               # Place your PDFs here
-│── README.md
+│── README.md          # Documentation
 Usage
 1. Add Your PDF
 Place your PDF file inside the pdf/ folder.
 
-Example:
+Example: pdf/thesilentpatient.pdf
 
-text
-Copy code
-pdf/thesilentpatient.pdf
 2. Ingest the PDF
 This extracts text, splits it into chunks, generates embeddings, and saves them locally.
 
-bash
-Copy code
+Bash
+
 node ingest.js
 After successful ingestion, a vectorstore.json file will be created.
 
 3. Ask Questions
 Run the chat agent with your question:
 
-bash
-Copy code
+Bash
+
 node chat.js "What happened to Alicia after the incident?"
 The agent will:
 
-Retrieve relevant context from the PDF
+Retrieve relevant context from the PDF.
 
-Paraphrase and explain answers naturally
+Paraphrase and explain answers naturally.
 
-Stream the response in real time
+Stream the response in real time.
 
 Important Notes
-Answers are generated only from the provided PDF context
+Strict Context: Answers are generated only from the provided PDF context.
 
-If the information is not present in the document, the agent will say so
+Fallback: If the information is not present in the document, the agent will say so.
 
-Larger PDFs may take longer during ingestion
+Performance: Larger PDFs may take longer during ingestion.
 
-Streaming requires a compatible Ollama model
+Compatibility: Streaming requires a compatible Ollama model.
 
 Configuration
-You can tweak the following:
+You can tweak the following settings:
 
-Chunk size & overlap (ingest.js)
+Chunk size & overlap: Located in ingest.js.
 
-Number of retrieved chunks (chat.js)
+Retrieval Depth: Number of retrieved chunks in chat.js.
 
-LLM model (llama3, qwen2.5, etc.)
+Model Selection: Switch between llama3, qwen2.5, etc.
 
-Temperature for more or less creative responses
+Temperature: Adjust for more or less creative responses.
 
 Why Local Ollama?
-Full data privacy
+Full data privacy: No data leaves your device.
 
-No API keys
+No API keys: Completely free to use.
 
-No rate limits
+No rate limits: Unlimited queries and documents.
 
-Faster iteration for experimentation
-
-Ideal for learning RAG internals
-
-Disclaimer
-This project is for educational and experimental purposes.
-Ensure you have the right to process and query the PDFs you use.
+Ideal for learning: Great for experimentation with RAG internals.
 
 Future Improvements
-Persistent vector DB (FAISS / Chroma)
+Persistent vector DB (FAISS / Chroma).
 
-Web UI with streaming responses
+Web UI with streaming responses.
 
-Multi-PDF support
+Multi-PDF support.
 
-Source citations per answer
+Source citations per answer.
 
-Chapter-aware retrieval
+Chapter-aware retrieval.
+
+Disclaimer
+This project is for educational and experimental purposes. Ensure you have the right to process and query the PDFs you use.
