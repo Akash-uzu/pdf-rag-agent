@@ -1,6 +1,7 @@
 import fs from "fs";
 import { ChatOllama, OllamaEmbeddings } from "@langchain/ollama";
 import { MemoryVectorStore } from "@langchain/classic/vectorstores/memory";
+import { log } from "console";
 
 const embeddings = new OllamaEmbeddings({
   model: "nomic-embed-text",
@@ -15,14 +16,15 @@ console.log(
 
 const vectorStore = new MemoryVectorStore(embeddings);
 
-vectorStore.memoryVectors = savedData.memoryVectors.map(v => ({
+vectorStore.memoryVectors = savedData.memoryVectors.map((v) => ({
   content: v.content,
   embedding: new Float32Array(v.embedding),
   metadata: v.metadata ?? {},
 }));
+// console.log(vectorStore.memoryVectors, "vectorStore.memoryVectors");
 
-const model = new ChatOllama({
-  model: "nemotron-3-nano:30b-cloud",
+export const model = new ChatOllama({
+  model: "deepseek-v3.2:cloud",
   baseUrl: "http://localhost:11434",
   temperature: 0.4,
 });
@@ -39,6 +41,7 @@ const docsWithScores = await vectorStore.similaritySearchWithScore(
   question,
   12
 );
+console.log(savedData, "savedData");
 
 const topDocs = docsWithScores.slice(0, 30).map(([doc]) => doc);
 

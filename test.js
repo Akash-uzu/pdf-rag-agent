@@ -1,41 +1,32 @@
-import fs from "fs";
-import PdfParse from "pdf-parse-new";
-import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
-import { LogStreamCallbackHandler } from "@langchain/core/tracers/log_stream";
+import readline from "readline";
+import { ChatOllama } from "@langchain/ollama";
 
-// console.log("Reading PDF file...");
-// const databuffer = fs.readFileSync("pdf/thesilentpatient.pdf");
-
-// console.log("Parsing PDF (this may take a while for large files)...");
-// const result = await PdfParse(databuffer);
-// console.log(result.text);
-
-const text = `
-Chapter One
-
-This is the first sentence.
-This is the second sentence.
-This is the third sentence.
-
-Chapter Two
-
-Here is another paragraph.
-It also has multiple sentences.
-This is the final sentence.
-`;
-
-const splitter = new RecursiveCharacterTextSplitter({
-  chunkSize: 50,
-  chunkOverlap: 10,
-  separators: ["\n\n", "\n", ". ", " "],
-  keepSeparator: true,
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
 });
 
-const docs = await splitter.createDocuments([text]);
+rl.question("Ask: ", async (question) => {
+  const model = new ChatOllama({
+    model: "deepseek-v3.2:cloud",
+    baseUrl: "http://localhost:11434",
+    temperature: 1,
+  });
 
-// docs.forEach((doc, index) => {
-//   console.log(`\n--- CHUNK ${index + 1} ---`);
-//   console.log(`Length: ${doc.pageContent.length}`);
-//   console.log(doc.pageContent);
-// });
-console.log(JSON.stringify(docs, null, 3), "docs");
+  const stream = await model.stream([
+    {
+      role: "system",
+      content: "You are a friendly conversational chatbot answering questions.",
+    },
+    {
+      role: "user",
+      content: question,
+    },
+  ]);
+
+  for await (const chunk of stream) {
+    process.stdout.write(chunk.content || "");
+  }
+
+  rl.close();
+});

@@ -15,8 +15,8 @@ const text = result.text
   .trim();
 
 const splitter = new RecursiveCharacterTextSplitter({
-  chunkSize: 1500,
-  chunkOverlap: 300,
+  chunkSize: 1800,
+  chunkOverlap: 400,
 });
 
 const docs = await splitter.createDocuments([text]);
